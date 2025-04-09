@@ -7,6 +7,7 @@ import com.oh.name_generator.fortune.entity.Fortune;
 import com.oh.name_generator.fortune.repository.FortuneRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,8 @@ public class FortuneServiceImpl implements FortuneService {
 
     private final FortuneRepository fortuneRepository;
 
-    private static final int FORTUNE_MAX_NUM = 320;
+    @Value("${max.fortune_size}")
+    private int maxFortuneSize;
 
 
     @Override
@@ -40,6 +42,6 @@ public class FortuneServiceImpl implements FortuneService {
      * @return String
      */
     private Long getGenerationLongNum(String word, Integer birth) {
-        return (long) (Math.abs((word.hashCode() + LocalDate.now().hashCode() + birth) % FORTUNE_MAX_NUM) + 1);
+        return (long) (Math.abs((word.hashCode() + LocalDate.now().hashCode() + birth) % maxFortuneSize) + 1);
     }
 }

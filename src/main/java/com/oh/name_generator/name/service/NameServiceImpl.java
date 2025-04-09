@@ -8,6 +8,7 @@ import com.oh.name_generator.name.dto.NameResponseDto;
 import com.oh.name_generator.name.repository.NameRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,16 +25,17 @@ public class NameServiceImpl implements NameService {
 
     private final NameRepository nameRepository;
 
-    private static final int CREATE_NAME_SIZE = 10;
+    @Value("${max.name_size}")
+    private int maxNameSize;
 
     @Override
     public List<NameResponseDto> createName(NameRequestDto nameRequestDto) {
-        int iteratorSize = CREATE_NAME_SIZE;
+        int iteratorSize = maxNameSize;
         List<NameResponseDto> createNames = new ArrayList<>();
         List<CreateNameRequestDto> createFirstNames = nameRepository.createFirstNames(nameRequestDto);
         List<CreateNameRequestDto> createSecondNames = nameRepository.createSecondNames(nameRequestDto);
 
-        if (createFirstNames.size() >= CREATE_NAME_SIZE && createSecondNames.size() >= CREATE_NAME_SIZE) {
+        if (createFirstNames.size() >= maxNameSize && createSecondNames.size() >= maxNameSize) {
             for (int i = 0; i < iteratorSize; i++) {
                 String getLastName = nameRequestDto.getLastName() == null ? "" : nameRequestDto.getLastName();
                 String getFirstName = nameRequestDto.getFirstName() == null ? "" : nameRequestDto.getFirstName();

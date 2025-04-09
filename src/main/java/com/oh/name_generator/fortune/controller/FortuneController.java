@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,8 @@ public class FortuneController {
 
     private final CookieUtils cookieUtils;
 
-    private static final String COOKIE_NAME = "FORTUNE";
+    @Value("${cookie.fortune_cookie}")
+    private String cookieName;
 
     /**
      * 운세 생성 (입력된 1개의 단어와 생년월일)
@@ -54,7 +56,7 @@ public class FortuneController {
      */
     @GetMapping("/fortune")
     public Map<String, Object> getFortune(HttpServletRequest request) {
-        List<FortuneResponseDto> fortune = cookieUtils.getCookie(COOKIE_NAME, request);
+        List<FortuneResponseDto> fortune = cookieUtils.getCookie(cookieName, request);
 
         Map<String, Object> response = new HashMap<>();
         response.put("content", fortune);
@@ -69,7 +71,7 @@ public class FortuneController {
      */
     @PostMapping("/fortune")
     public ResponseEntity<Void> saveFortune(@RequestBody FortuneSaveRequestDto fortune, HttpServletRequest request, HttpServletResponse response) {
-        cookieUtils.setCookie(COOKIE_NAME, fortune, request, response);
+        cookieUtils.setCookie(cookieName, fortune, request, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -80,7 +82,7 @@ public class FortuneController {
      */
     @DeleteMapping("/fortune")
     public ResponseEntity<Void> deleteFortune(HttpServletRequest request, HttpServletResponse response) {
-        cookieUtils.removeCookie(COOKIE_NAME, request, response);
+        cookieUtils.removeCookie(cookieName, request, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

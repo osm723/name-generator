@@ -22,4 +22,5 @@ public class NameRequestDto {
 
     private String selectedName;
 
+    private Boolean useGpt;
 }

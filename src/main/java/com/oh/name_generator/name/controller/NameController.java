@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class NameController {
 
     private final CookieUtils cookieUtils;
 
-    private static final String COOKIE_NAME = "NAME";
+    @Value("${cookie.name_cookie}")
+    private String cookieName;
 
     /**
      * 이름 생성
@@ -53,7 +55,7 @@ public class NameController {
      */
     @GetMapping("/name")
     public Map<String, Object> getName(HttpServletRequest request) {
-        List<NameSaveResponseDto> names = cookieUtils.getCookie(COOKIE_NAME, request);
+        List<NameSaveResponseDto> names = cookieUtils.getCookie(cookieName, request);
 
         Map<String, Object> response = new HashMap<>();
         response.put("content", names);
@@ -69,7 +71,7 @@ public class NameController {
     @PostMapping("/name")
     public ResponseEntity<Void> saveName(@RequestBody List<NameSaveRequestDto> saveNames, HttpServletRequest request, HttpServletResponse response) {
         for (NameSaveRequestDto saveName : saveNames) {
-            cookieUtils.setCookie(COOKIE_NAME, saveName, request, response);
+            cookieUtils.setCookie(cookieName, saveName, request, response);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -82,7 +84,7 @@ public class NameController {
      */
     @DeleteMapping("/name")
     public ResponseEntity<Void> deleteName(HttpServletRequest request, HttpServletResponse response) {
-        cookieUtils.removeCookie(COOKIE_NAME, request, response);
+        cookieUtils.removeCookie(cookieName, request, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
