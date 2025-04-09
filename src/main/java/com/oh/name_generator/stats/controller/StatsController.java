@@ -52,7 +52,7 @@ public class StatsController {
      * @param statsRequestDto
      * @return viewPath
      */
-    @GetMapping("/main")
+    @GetMapping()
     public String statsMain(@ModelAttribute("statsName") StatsRequestDto statsRequestDto) {
         return "name/stats/statsMain";
     }

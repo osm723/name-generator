@@ -18,16 +18,16 @@ import java.sql.PreparedStatement;
 public class BatchController {
 
     @Value("${spring.datasource.url}")
-    private static String jdbcURL;
+    private String jdbcURL;
 
     @Value("${spring.datasource.username}")
-    private static String username;
+    private String username;
 
     @Value("${spring.datasource.password}")
-    private static String password;
+    private String password;
 
     @Value("${path.csv_file}")
-    private static String csvFilePath;
+    private String csvFilePath;
 
     @Scheduled(cron = "0 0 0 1 * ?")
     //@Scheduled(initialDelay = 10000)

@@ -29,8 +29,8 @@ public class StatsServiceImpl implements StatsService {
 
     private final ModelMapper modelMapper;
 
-    @Value("${path.translate_file}")
-    private static String translateFileName;
+    //@Value("${path.translate_file}")
+    private static String translateFileName = "src/main/resources/translate/hanja.txt";
 
     @Override
     public Page<StatsResponseDto> findAll(Pageable pageable) {

@@ -1,10 +1,7 @@
 package com.oh.name_generator.stats.entity;
 
 import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,6 +9,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 @Entity
 @Getter
+@Table(name = "CF_NAME_STATS", schema = "GEN")
 public class NameStats {
 
     public NameStats() {

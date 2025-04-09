@@ -3,19 +3,21 @@ package com.oh.name_generator.api.controller;
 import com.oh.name_generator.chatgpt.ChatGptApi;
 import com.oh.name_generator.common.utils.CookieUtils;
 import com.oh.name_generator.name.dto.NameRequestDto;
+import com.oh.name_generator.name.dto.NameSaveRequestDto;
 import com.oh.name_generator.name.service.NameService;
 import com.oh.name_generator.stats.dto.StatsRequestDto;
 import com.oh.name_generator.stats.dto.StatsResponseDto;
 import com.oh.name_generator.stats.service.StatsService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,7 @@ public class ApiController {
     private final ChatGptApi chatGptApi;
 
     @Value("${cookie.name_cookie}")
-    private static String cookieName;
+    private String cookieName;
 
     /**
      * statsNamesApi
@@ -55,11 +57,23 @@ public class ApiController {
      * @param request
      * @return names
      */
-    @PostMapping("/save/names")
+    @PostMapping("/saved/names")
     public Map<String, Object> saveNamesApi(HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         response.put("content", cookieUtils.getCookie(cookieName, request));
         return response;
+    }
+
+    /**
+     * saveNamesApi
+     * 이름 저장 Api
+     * @param request
+     * @return names
+     */
+    @PostMapping("/save/name")
+    public ResponseEntity<Void> saveName(NameSaveRequestDto saveName, HttpServletRequest request, HttpServletResponse response) {
+        cookieUtils.setCookie(cookieName ,saveName, request, response);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

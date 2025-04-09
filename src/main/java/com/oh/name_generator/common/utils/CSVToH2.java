@@ -31,7 +31,7 @@ public class CSVToH2 {
              BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csvFilePath), StandardCharsets.UTF_8))) {
 
             String line;
-            String sql = "INSERT INTO NAME_STATS (YEAR_RANK, NAME, YEAR_COUNT, GENDER, YEARS, TOTAL_RANK) VALUES (?, ?, ?, ?, ?, 0)";
+            String sql = "INSERT INTO GEN.CF_NAME_STATS (YEAR_RANK, NAME, YEAR_COUNT, GENDER, YEARS, TOTAL_RANK) VALUES (?, ?, ?, ?, ?, 0)";
             PreparedStatement statement = connection.prepareStatement(sql);
 
             line = br.readLine();
