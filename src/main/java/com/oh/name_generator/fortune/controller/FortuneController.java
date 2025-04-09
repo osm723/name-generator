@@ -20,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/generation")
 public class FortuneController {
 
     private final FortuneService fortuneService;
