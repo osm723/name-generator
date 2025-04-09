@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,11 +101,19 @@ public class StatsController {
      * @param model
      * @return viewPath
      */
+//    @GetMapping("/statsPopup")
+//    public String statsPopup(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto, Model model) {
+//        StatsPopupResponseDto popupName = statsService.findPopupByNameAndYears(statsPopupRequestDto);
+//        model.addAttribute("popupName", popupName);
+//        return "name/stats/popup";
+//    }
+
     @GetMapping("/statsPopup")
-    public String statsPopup(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto, Model model) {
+    public ResponseEntity<StatsPopupResponseDto> getPopupData(@RequestParam String name, @RequestParam int years) {
+        // 여기에 서버에서 데이터 조회 로직 추가
+        StatsPopupRequestDto statsPopupRequestDto = new StatsPopupRequestDto(name, years);
         StatsPopupResponseDto popupName = statsService.findPopupByNameAndYears(statsPopupRequestDto);
-        model.addAttribute("popupName", popupName);
-        return "name/stats/popup";
+        return ResponseEntity.ok(popupName);
     }
 
     /**
