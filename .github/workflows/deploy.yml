@@ -27,7 +27,7 @@ jobs:
       - name: 빌드된 파일 이름 변경
         run: mv ./build/libs/*SNAPSHOT.jar ./project.jar
 
-      - name: SCP로 EC2에 빌드된 파일 전송
+      - name: SCP로 EC2 WAS 1번 서버로 빌드된 파일 전송
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -36,10 +36,35 @@ jobs:
           source: project.jar
           target: /home/ubuntu/name-generator/tobe
 
-      - name: SSH로 EC2에 접속
+      - name: SSH로 EC2 WAS 1번에 접속하여 배포 및 재시작
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            rm -rf /home/ubuntu/name-generator/current
+            mkdir /home/ubuntu/name-generator/current
+            mv /home/ubuntu/name-generator/tobe/project.jar /home/ubuntu/name-generator/current/project.jar
+            cd /home/ubuntu/name-generator/current
+            sudo fuser -k -n tcp 8080 || true
+            nohup java -jar -Dspring.profiles.active=prod project.jar > ./output.log 2>&1 &
+            rm -rf /home/ubuntu/name-generator/tobe
+
+      - name: SCP로 EC2 WAS 2번 서버로 빌드된 파일 전송
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST_2 }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: project.jar
+          target: /home/ubuntu/name-generator/tobe
+
+      - name: SSH로 EC2 WAS 2번에 접속하여 배포 및 재시작
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST_2 }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
