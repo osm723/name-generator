@@ -74,5 +74,5 @@ jobs:
             mv /home/ubuntu/name-generator/tobe/project.jar /home/ubuntu/name-generator/current/project.jar
             cd /home/ubuntu/name-generator/current
             sudo fuser -k -n tcp 8080 || true
-            nohup java -jar -Dspring.profiles.active=prod project.jar > ./output.log 2>&1 &
+            nohup java -jar --server.port=8081 -Dspring.profiles.active=prod project.jar > ./output.log 2>&1 &
             rm -rf /home/ubuntu/name-generator/tobe
