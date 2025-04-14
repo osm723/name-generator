@@ -6,25 +6,20 @@ on:
       - main
 
 jobs:
-  Deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Github Repository 파일 로드
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
-      - name: TEST
-        run: |
-          ls
-          pwd
-
-      - name: JDK17 설치
-      - uses: actions/setup-java@v4
+      - name: JDK 17버전 설치
+        uses: actions/setup-java@v4
         with:
-          distributions: temurin
+          distribution: temurin
           java-version: 17
 
       - name: application.yml 파일 생성
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}"" > src/main/resources/application.yml
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
 
       - name: 테스트 및 빌드
         run: ./gradlew clean build
@@ -33,7 +28,7 @@ jobs:
         run: mv ./build/libs/*SNAPSHOT.jar ./project.jar
 
       - name: SCP로 EC2에 빌드된 파일 전송
-        uses: appleboy/scp-actions@v0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
@@ -42,17 +37,17 @@ jobs:
           target: /home/ubuntu/name-generator/tobe
 
       - name: SSH로 EC2에 접속
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            rm -rf /home/ubuntu/name-generator/current
+            rm -rf /home/ubuntu//current
             mkdir /home/ubuntu/name-generator/current
             mv /home/ubuntu/name-generator/tobe/project.jar /home/ubuntu/name-generator/current/project.jar
             cd /home/ubuntu/name-generator/current
             sudo fuser -k -n tcp 8080 || true
-            nohup java -jar -Dspring.profiles.active=prod build/libs/project.jar > ./output.log 2>&1 &
+            nohup java -jar project.jar > ./output.log 2>&1 & 
             rm -rf /home/ubuntu/name-generator/tobe
