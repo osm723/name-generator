@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class StatsServiceImpl implements StatsService {
     private final ModelMapper modelMapper;
 
     //@Value("${path.translate_file}")
-    private static String translateFileName = "src/main/resources/translate/hanja.txt";
+    private static String translateFileName = "translate/hanja.txt";
 
     @Override
     public Page<StatsResponseDto> findAll(Pageable pageable) {
