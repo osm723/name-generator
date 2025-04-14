@@ -8,14 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +111,9 @@ public class StatsServiceImpl implements StatsService {
         boolean isBlock = false;
         String setName = "[" + name + "]";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(translateFileName))) {
+        try {
+            InputStream is = new ClassPathResource(translateFileName).getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().equals(setName)) {
