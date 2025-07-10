@@ -15,18 +15,18 @@ import java.sql.PreparedStatement;
 public class CSVToH2 {
 
     @Value("${spring.datasource.url}")
-    private static String jdbcURL;
+    private String jdbcURL;
 
     @Value("${spring.datasource.username}")
-    private static String username;
+    private String username;
 
     @Value("${spring.datasource.password}")
-    private static String password;
+    private String password;
 
     @Value("${path.csv_file}")
-    private static String csvFilePath;
+    private String csvFilePath;
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         try (Connection connection = DriverManager.getConnection(jdbcURL, username, password);
              BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csvFilePath), StandardCharsets.UTF_8))) {
 

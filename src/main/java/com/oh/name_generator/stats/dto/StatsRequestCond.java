@@ -1,5 +1,7 @@
 package com.oh.name_generator.stats.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,19 +15,22 @@ public class StatsRequestCond {
     @Size(max = 2, min = 2)
     private String gender;
 
-    @Size(max = 4, min = 4)
+    @Min(2008)
+    @Max(2030)
     private Integer startYear;
 
-    @Size(max = 4, min = 4)
+    @Min(2008)
+    @Max(2030)
     private Integer endYear;
 
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer yearRank;
 
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer totalRank;
 
-    @Size(max = 4)
     private Integer yearCount;
 
     private String sortField;

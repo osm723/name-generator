@@ -23,10 +23,10 @@ import java.util.List;
 public class ChatGptApi {
 
     @Value("${api.gpt.key}")
-    private static String GPT_API_KEY;
+    private String GPT_API_KEY;
 
     @Value("${api.gpt.url}")
-    private static String GPT_API_URL;
+    private String GPT_API_URL;
 
     /**
      * generationNamesWithGpt
@@ -115,7 +115,7 @@ public class ChatGptApi {
      * @throws IOException
      * @throws InterruptedException
      */
-    private static HttpResponse<String> gptApiCall(String requestMessage) throws IOException, InterruptedException {
+    private HttpResponse<String> gptApiCall(String requestMessage) throws IOException, InterruptedException {
         String requestData = setRequestData(requestMessage).toString();
 
         // HTTP 클라이언트 및 요청 생성

@@ -52,8 +52,6 @@ public class StatsResponseDto {
     private Integer yearRank;
 
     @NotEmpty
-    @Min(1)
-    @Max(10000)
     private Long yearCount;
 
     private Long totalCount;      // sum 결과는 Long

@@ -51,9 +51,10 @@ public class StatsServiceImpl implements StatsService {
 
         // 한자 찾기
         String translateName = statsPopupRequestDto.getName();
-        statsPopupResponseDto.setFirstNameTranslate(translate(translateName.substring(0, 1)));
-        statsPopupResponseDto.setSecondNameTranslate(translate(translateName.substring(1, 2)));
-
+        if (translateName.length() == 2) {
+            statsPopupResponseDto.setFirstNameTranslate(translate(translateName.substring(0, 1)));
+            statsPopupResponseDto.setSecondNameTranslate(translate(translateName.substring(1, 2)));
+        }
         return statsPopupResponseDto;
     }
 
@@ -111,9 +112,8 @@ public class StatsServiceImpl implements StatsService {
         boolean isBlock = false;
         String setName = "[" + name + "]";
 
-        try {
-            InputStream is = new ClassPathResource(translateFileName).getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        try (InputStream is = new ClassPathResource(translateFileName).getInputStream();
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().equals(setName)) {

@@ -1,5 +1,7 @@
 package com.oh.name_generator.stats.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -44,15 +46,16 @@ public class StatsPopupResponseDto {
     private String gender;
 
     @NotEmpty
-    @Size(max = 4, min = 4)
+    @Min(2008)
+    @Max(2030)
     private Integer years;
 
     @NotEmpty
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer yearRank;
 
     @NotEmpty
-    @Size(max = 4)
     private Long yearCount;
 
     private List<String> firstNameTranslate;
@@ -64,10 +67,12 @@ public class StatsPopupResponseDto {
     @NumberFormat(pattern = "#.#") // 소수점 첫번째 자리까지
     private Double totalAvgRank;  // avg 결과는 Double
 
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer totalMaxRank; // min, max 결과는 Integer
 
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer totalMinRank;
 
     private Long totalRankCount;
