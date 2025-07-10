@@ -1,9 +1,6 @@
 package com.oh.name_generator.stats.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.NumberFormat;
@@ -45,17 +42,17 @@ public class StatsPopupResponseDto {
     @Size(max = 2, min = 2)
     private String gender;
 
-    @NotEmpty
+    @NotNull
     @Min(2008)
     @Max(2030)
     private Integer years;
 
-    @NotEmpty
+    @NotNull
     @Min(1)
     @Max(20)
     private Integer yearRank;
 
-    @NotEmpty
+    @NotNull
     private Long yearCount;
 
     private List<String> firstNameTranslate;

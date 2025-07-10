@@ -28,6 +28,8 @@ public class NameServiceImpl implements NameService {
     @Value("${max.name_size}")
     private int maxNameSize;
 
+    private final Random random = new Random();
+
     @Override
     public List<NameResponseDto> createName(NameRequestDto nameRequestDto) {
         int iteratorSize = maxNameSize;
@@ -104,7 +106,7 @@ public class NameServiceImpl implements NameService {
 
         while (true) {
             //Collections.shuffle(createNames);
-            String createName = createNames.get(new Random().nextInt(createNames.size())).getCreateName();
+            String createName = createNames.get(random.nextInt(createNames.size())).getCreateName();
 
             if (!createName.equals(checkName)) {
                 return createName;
