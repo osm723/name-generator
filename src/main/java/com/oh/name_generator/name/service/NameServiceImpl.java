@@ -91,6 +91,17 @@ public class NameServiceImpl implements NameService {
      * @return
      */
     private String duplicationCheck(List<CreateNameRequestDto> createNames, String checkName) {
+        if (createNames == null || createNames.isEmpty()) {
+            throw new BizException("이름 목록이 존재하지 않습니다.");
+        }
+
+        if (createNames.size() == 1) {
+            String onlyName = createNames.get(0).getCreateName();
+            if (onlyName.equals(checkName)) {
+                return onlyName;
+            }
+        }
+
         while (true) {
             //Collections.shuffle(createNames);
             String createName = createNames.get(new Random().nextInt(createNames.size())).getCreateName();

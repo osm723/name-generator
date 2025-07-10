@@ -21,7 +21,6 @@ public class CookieUtils {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    @GetMapping("/set-cookie")
     public <T> void setCookie(String cookieName, T saveValue, HttpServletRequest request, HttpServletResponse response) {
         List<T> savedCookies = getCookie(cookieName, request);
         savedCookies.add(savedCookies.size(), saveValue);
@@ -39,7 +38,6 @@ public class CookieUtils {
         }
     }
 
-    @GetMapping("/get-cookie")
     public <T> List<T> getCookie(String cookieName, HttpServletRequest request) {
         List<T> savedCookies = new ArrayList<>();
         if (request.getCookies() != null) {
@@ -58,7 +56,6 @@ public class CookieUtils {
         return savedCookies;
     }
 
-    @GetMapping("/remove-cookie")
     public void removeCookie(String cookieName, HttpServletRequest request, HttpServletResponse response) {
         Cookie savedCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookieName.equals(cookie.getName()))

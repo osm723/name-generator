@@ -18,7 +18,6 @@ import java.sql.PreparedStatement;
 @Component
 public class BatchController {
 
-    @Autowired
     @Value("${spring.datasource.url}")
     private String jdbcURL;
 
