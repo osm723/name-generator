@@ -2,6 +2,8 @@ package com.oh.name_generator.stats.entity;
 
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -47,16 +49,19 @@ public class NameStats {
     private String gender;
 
     @NotEmpty
-    @Size(max = 4, min = 4)
+    @Min(2008)
+    @Max(2040)
     private Integer years;
 
     @NotEmpty
-    @Size(max = 2)
+    @Min(1)
+    @Max(20)
     private Integer yearRank;
 
-    @NotEmpty
     private Long yearCount;
 
+    @Min(1)
+    @Max(20)
     private Integer totalRank;
 
     private Long totalCount;      // sum 결과는 Long

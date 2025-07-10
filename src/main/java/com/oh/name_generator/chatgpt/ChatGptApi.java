@@ -62,16 +62,18 @@ public class ChatGptApi {
     private static String setRequestMessage(NameRequestDto nameRequestDto) {
         String requestMessage = "두글자 한국 아이 이름 10개만 만들어줘. 영문명이나 한자 풀이, 뜻은 필요없어 ";
 
-        if (!nameRequestDto.getGender().isBlank()) {
-            requestMessage = nameRequestDto.getGender() + "자 " + requestMessage;
-        }
+        if (nameRequestDto != null) {
+            if (!nameRequestDto.getGender().isBlank()) {
+                requestMessage = nameRequestDto.getGender() + "자 " + requestMessage;
+            }
 
-        if (!nameRequestDto.getFirstName().isBlank()) {
-            requestMessage = nameRequestDto.getFirstName() + " 로 시작하는 " + requestMessage;
-        }
+            if (!nameRequestDto.getFirstName().isBlank()) {
+                requestMessage = nameRequestDto.getFirstName() + " 로 시작하는 " + requestMessage;
+            }
 
-        if (!nameRequestDto.getSecondName().isBlank()) {
-            requestMessage = nameRequestDto.getSecondName() + " 로 끝나는 " + requestMessage;
+            if (!nameRequestDto.getSecondName().isBlank()) {
+                requestMessage = nameRequestDto.getSecondName() + " 로 끝나는 " + requestMessage;
+            }
         }
 
         log.info("requestMessage={}",requestMessage);

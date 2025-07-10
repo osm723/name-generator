@@ -30,7 +30,7 @@ public class StatsServiceImpl implements StatsService {
     private final ModelMapper modelMapper;
 
     //@Value("${path.translate_file}")
-    private static String translateFileName = "translate/hanja.txt";
+    private String translateFileName = "translate/hanja.txt";
 
     @Override
     public Page<StatsResponseDto> findAll(Pageable pageable) {
@@ -68,7 +68,7 @@ public class StatsServiceImpl implements StatsService {
         return statsRepository.findYearRankByName(modelMapper.map(statsPopupRequestDto, StatsRequestCond.class));
     }
 
-    private static Page<StatsPopupResponseDto> transformStatsPopupResponseDto(Page<NameStats> names) {
+    private Page<StatsPopupResponseDto> transformStatsPopupResponseDto(Page<NameStats> names) {
         return names.map(nameStats -> new StatsPopupResponseDto(
                 nameStats.getName(),
                 nameStats.getGender(),
@@ -82,7 +82,7 @@ public class StatsServiceImpl implements StatsService {
                 nameStats.getTotalRankCount()));
     }
 
-    private static Page<StatsResponseDto> transformStatsResponseDto(Page<NameStats> names) {
+    private Page<StatsResponseDto> transformStatsResponseDto(Page<NameStats> names) {
         return names.map(nameStats -> new StatsResponseDto(
                 nameStats.getName(),
                 nameStats.getGender(),
@@ -107,7 +107,7 @@ public class StatsServiceImpl implements StatsService {
         return nameTranslate;
     }
 
-    public static List<String> extractGaBlock(String name) {
+    public List<String> extractGaBlock(String name) {
         List<String> gaBlock = new ArrayList<>();
         boolean isBlock = false;
         String setName = "[" + name + "]";
