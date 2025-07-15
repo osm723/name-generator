@@ -11,15 +11,13 @@ import java.util.Map;
 
 public interface StatsService {
 
-    Page<StatsResponseDto> findAll(Pageable pageable);
+    Page<StatsResponseDto> getStatsNames(Pageable pageable, StatsRequestDto statsRequestDto);
 
-    Page<StatsResponseDto> findByWhere(Pageable pageable, StatsRequestDto statsRequestDto);
+    StatsPopupResponseDto getStatsNameByNameAndYears(StatsPopupRequestDto statsPopupRequestDto);
 
-    StatsPopupResponseDto findPopupByNameAndYears(StatsPopupRequestDto statsPopupRequestDto);
+    Map<Integer, Long> getStatsYearCountChart(StatsPopupRequestDto statsPopupRequestDto);
 
-    Map<Integer, Long> findYearCountByName(StatsPopupRequestDto statsPopupRequestDto);
-
-    Map<Integer, Integer> findYearRankByName(StatsPopupRequestDto statsPopupRequestDto);
+    Map<Integer, Integer> getStatsYearRankChart(StatsPopupRequestDto statsPopupRequestDto);
 
 
 }

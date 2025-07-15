@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.oh.name_generator.global.common.consts.Constants.FileDir.TRANSLATE_FILE_NAME;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,24 +29,15 @@ public class StatsServiceImpl implements StatsService {
 
     private final ModelMapper modelMapper;
 
-    //@Value("${path.translate_file}")
-    private String translateFileName = "translate/hanja.txt";
-
     @Override
-    public Page<StatsResponseDto> findAll(Pageable pageable) {
-        Page<NameStats> nameStatsList = statsRepository.findAll(pageable);
-        return nameStatsList.map(StatsResponseDto::new);
-    }
-
-    @Override
-    public Page<StatsResponseDto> findByWhere(Pageable pageable, StatsRequestDto statsRequestDto) {
-        Page<NameStats> names = statsRepository.findByWhere(pageable, modelMapper.map(statsRequestDto, StatsRequestCond.class));
+    public Page<StatsResponseDto> getStatsNames(Pageable pageable, StatsRequestDto statsRequestDto) {
+        Page<NameStats> names = statsRepository.findStatsNamesByCond(pageable, modelMapper.map(statsRequestDto, StatsRequestCond.class));
         return transformStatsResponseDto(names);
     }
 
     @Override
-    public StatsPopupResponseDto findPopupByNameAndYears(StatsPopupRequestDto statsPopupRequestDto) {
-        NameStats name = statsRepository.findByNameAndYears(statsPopupRequestDto.getName(), statsPopupRequestDto.getYears());
+    public StatsPopupResponseDto getStatsNameByNameAndYears(StatsPopupRequestDto statsPopupRequestDto) {
+        NameStats name = statsRepository.findStatsByNameAndYears(statsPopupRequestDto.getName(), statsPopupRequestDto.getYears());
         StatsPopupResponseDto statsPopupResponseDto = modelMapper.map(name, StatsPopupResponseDto.class);
 
         // 한자 찾기
@@ -57,27 +50,13 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public Map<Integer, Long> findYearCountByName(StatsPopupRequestDto statsPopupRequestDto) {
-        return statsRepository.findYearCountByName(modelMapper.map(statsPopupRequestDto, StatsRequestCond.class));
+    public Map<Integer, Long> getStatsYearCountChart(StatsPopupRequestDto statsPopupRequestDto) {
+        return statsRepository.findStatsYearCountByName(modelMapper.map(statsPopupRequestDto, StatsRequestCond.class));
     }
 
     @Override
-    public Map<Integer, Integer> findYearRankByName(StatsPopupRequestDto statsPopupRequestDto) {
-        return statsRepository.findYearRankByName(modelMapper.map(statsPopupRequestDto, StatsRequestCond.class));
-    }
-
-    private Page<StatsPopupResponseDto> transformStatsPopupResponseDto(Page<NameStats> names) {
-        return names.map(nameStats -> new StatsPopupResponseDto(
-                nameStats.getName(),
-                nameStats.getGender(),
-                nameStats.getYears(),
-                nameStats.getYearRank(),
-                nameStats.getYearCount(),
-                nameStats.getTotalCount(),
-                nameStats.getTotalAvgRank(),
-                nameStats.getTotalMaxRank(),
-                nameStats.getTotalMinRank(),
-                nameStats.getTotalRankCount()));
+    public Map<Integer, Integer> getStatsYearRankChart(StatsPopupRequestDto statsPopupRequestDto) {
+        return statsRepository.findStatsYearRankByName(modelMapper.map(statsPopupRequestDto, StatsRequestCond.class));
     }
 
     private Page<StatsResponseDto> transformStatsResponseDto(Page<NameStats> names) {
@@ -110,7 +89,7 @@ public class StatsServiceImpl implements StatsService {
         boolean isBlock = false;
         String setName = "[" + name + "]";
 
-        try (InputStream is = new ClassPathResource(translateFileName).getInputStream();
+        try (InputStream is = new ClassPathResource(TRANSLATE_FILE_NAME).getInputStream();
              BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             while ((line = br.readLine()) != null) {

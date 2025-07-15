@@ -40,3 +40,5 @@ out/
 /src/main/resources/file/sql/
 /src/main/resources/application.yml
 /src/main/resources/schema.sql
+
+/src/main/resources/static/assets

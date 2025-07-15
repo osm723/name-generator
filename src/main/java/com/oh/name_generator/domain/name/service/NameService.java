@@ -15,7 +15,7 @@ public interface NameService {
 
     List<String> generateNamesWithGpt(@Valid NameRequestDto nameRequestDto);
 
-    void saveNames(@Valid List<NameSaveRequestDto> nameSaveRequestDto, HttpServletRequest request, HttpServletResponse response);
+    void saveName(@Valid NameSaveRequestDto nameSaveRequestDto, HttpServletRequest request, HttpServletResponse response);
 
     List<NameResponseDto> getSavedNames(HttpServletRequest request);
 

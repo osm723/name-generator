@@ -56,10 +56,10 @@ public class NameController {
      * @return ApiResponse<Void>
      */
     @PostMapping("/save")
-    public ApiResponse<Void> saveNames(@Valid @RequestBody List<NameSaveRequestDto> nameSaveRequestDto,
+    public ApiResponse<Void> saveName(@Valid @RequestBody NameSaveRequestDto nameSaveRequestDto,
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
-        nameService.saveNames(nameSaveRequestDto, request, response);
+        nameService.saveName(nameSaveRequestDto, request, response);
         return ApiResponse.success(null, Constants.Messages.SAVE_SUCCESS);
     }
 

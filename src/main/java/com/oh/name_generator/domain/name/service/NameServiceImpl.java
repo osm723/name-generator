@@ -52,11 +52,11 @@ public class NameServiceImpl implements NameService {
     }
 
     @Override
-    public void saveNames(List<NameSaveRequestDto> nameSaveRequestDto, HttpServletRequest request, HttpServletResponse response) {
-        if (nameSaveRequestDto == null || nameSaveRequestDto.isEmpty()) {
+    public void saveName(NameSaveRequestDto nameSaveRequestDto, HttpServletRequest request, HttpServletResponse response) {
+        if (nameSaveRequestDto == null) {
             throw new BusinessException(NOT_FOUND_REQUEST_NAME);
         }
-        nameSaveRequestDto.forEach(saveName -> cookieUtils.setCookie(NAME_COOKIE, saveName, request, response));
+        cookieUtils.setCookie(NAME_COOKIE, nameSaveRequestDto, request, response);
     }
 
     @Override

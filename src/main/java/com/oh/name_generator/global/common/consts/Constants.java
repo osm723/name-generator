@@ -27,9 +27,6 @@ public final class Constants {
 
     public static final class Api {
         public static final String API_V1_PREFIX = "/api/v1";
-        public static final String GENERATION_PREFIX = "/generation";
-        public static final String STATS_PREFIX = "/stats";
-
         private Api() {}
     }
 
@@ -51,5 +48,9 @@ public final class Constants {
         public static final String EXTERNAL_API_ERROR = "외부 API 호출 중 오류가 발생했습니다.";
 
         private Messages() {}
+    }
+
+    public static final class FileDir {
+        public static final String TRANSLATE_FILE_NAME = "translate/hanja.txt";
     }
 }

@@ -26,7 +26,7 @@ public class NameRequestDto {
     @Pattern(regexp = "^[MWC]?$", message = "성별은 M(남아), W(여아), C(공통) 중 하나여야 합니다.")
     private String gender;
 
-    private String selectedName;
+    private String selectName;
 
     private Boolean useGpt = false;
 }

@@ -5,14 +5,12 @@ import com.oh.name_generator.domain.stats.dto.StatsPopupResponseDto;
 import com.oh.name_generator.domain.stats.dto.StatsRequestDto;
 import com.oh.name_generator.domain.stats.dto.StatsResponseDto;
 import com.oh.name_generator.domain.stats.service.StatsService;
-import com.oh.name_generator.global.common.consts.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,32 +28,6 @@ public class StatsController {
     private final StatsService statsService;
 
     /**
-     * namesAll
-     * 이름 통계 전체 조회
-     * @param statsRequestDto
-     * @param model
-     * @param pageable
-     * @return viewPath
-     */
-    @GetMapping("/statsNamesAll")
-    public String statsNamesAll(@ModelAttribute("statsName") @Validated StatsRequestDto statsRequestDto, Model model, Pageable pageable) {
-        Page<StatsResponseDto> names = statsService.findAll(pageable);
-        model.addAttribute("names", names);
-        return "name/stats/statsMain";
-    }
-
-    /**
-     * statsMain
-     * 이름 통계 초기화면
-     * @param statsRequestDto
-     * @return viewPath
-     */
-    @GetMapping()
-    public String statsMain(@ModelAttribute("statsName") StatsRequestDto statsRequestDto) {
-        return "name/stats/statsMain";
-    }
-
-    /**
      * statsNames
      * 이름 통계 조건부 조회
      * @param statsRequestDto
@@ -63,12 +35,12 @@ public class StatsController {
      * @param pageable
      * @return viewPath
      */
-    @GetMapping("/statsNames")
-    public String statsNames(@ModelAttribute("statsName") @Validated StatsRequestDto statsRequestDto, Model model, Pageable pageable) {
-        Page<StatsResponseDto> names = statsService.findByWhere(pageable, statsRequestDto);
-        model.addAttribute("names", names);
-        return "name/stats/statsMain";
-    }
+//    @GetMapping("/statsNames")
+//    public String statsNames(@ModelAttribute("statsName") @Validated StatsRequestDto statsRequestDto, Model model, Pageable pageable) {
+//        Page<StatsResponseDto> names = statsService.findByWhere(pageable, statsRequestDto);
+//        model.addAttribute("names", names);
+//        return "name/stats/statsMain";
+//    }
 
     /**
      * statsNamesPage
@@ -77,9 +49,9 @@ public class StatsController {
      * @param pageable
      * @return status
      */
-    @GetMapping("/statsNamesPage")
-    public ResponseEntity<Map<String, Object>> statsNamesPage(@ModelAttribute("statsName") @Validated StatsRequestDto statsRequestDto, Pageable pageable) {
-        Page<StatsResponseDto> names = statsService.findByWhere(pageable, statsRequestDto);
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getStatsNames(@ModelAttribute("statsName") @Validated StatsRequestDto statsRequestDto, Pageable pageable) {
+        Page<StatsResponseDto> names = statsService.getStatsNames(pageable, statsRequestDto);
 
         Map<String, Object> response = new HashMap<>();
         response.put("names", names);
@@ -95,11 +67,9 @@ public class StatsController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/statsPopup")
-    public ResponseEntity<StatsPopupResponseDto> getPopupData(@RequestParam String name, @RequestParam int years) {
-        // 여기에 서버에서 데이터 조회 로직 추가
-        StatsPopupRequestDto statsPopupRequestDto = new StatsPopupRequestDto(name, years);
-        StatsPopupResponseDto popupName = statsService.findPopupByNameAndYears(statsPopupRequestDto);
+    @GetMapping("/detail")
+    public ResponseEntity<StatsPopupResponseDto> getStatsName(@RequestParam String name, @RequestParam int years) {
+        StatsPopupResponseDto popupName = statsService.getStatsNameByNameAndYears(new StatsPopupRequestDto(name, years));
         return ResponseEntity.ok(popupName);
     }
 
@@ -109,11 +79,11 @@ public class StatsController {
      * @param statsPopupRequestDto
      * @return response
      */
-    @GetMapping("/statsChart/yearCount")
+    @GetMapping("/chart/yearCount")
     @ResponseBody
-    public Map<String, Object> statsYearCountChart(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto) {
+    public Map<String, Object> getStatsYearCountChart(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto) {
         Map<String, Object> response = new HashMap<>();
-        Map<Integer, Long> chartNames = statsService.findYearCountByName(statsPopupRequestDto);
+        Map<Integer, Long> chartNames = statsService.getStatsYearCountChart(statsPopupRequestDto);
         response.put("chartNames", chartNames);
         return response;
     }
@@ -124,11 +94,11 @@ public class StatsController {
      * @param statsPopupRequestDto
      * @return response
      */
-    @GetMapping("/statsChart/yearRank")
+    @GetMapping("/chart/yearRank")
     @ResponseBody
-    public Map<String, Object> statsYearRankChart(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto) {
+    public Map<String, Object> getStatsYearRankChart(@ModelAttribute @Validated StatsPopupRequestDto statsPopupRequestDto) {
         Map<String, Object> response = new HashMap<>();
-        Map<Integer, Integer> chartNames = statsService.findYearRankByName(statsPopupRequestDto);
+        Map<Integer, Integer> chartNames = statsService.getStatsYearRankChart(statsPopupRequestDto);
         response.put("chartNames", chartNames);
         return response;
     }

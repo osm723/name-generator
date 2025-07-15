@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.github.node-gradle.node' version '7.0.2'
 }
 
 group = 'com.example'
@@ -46,9 +47,36 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:3.1.0'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
-
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+clean {
+	delete file('src/main/generated')
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorPath = configurations.annotationProcessor
+}
+
+test {
+	enabled = true
+}
+
+node {
+	version = '18.18.2'           // 설치될 node 버전
+	npmVersion = '9.8.1'          // npm 버전 (선택)
+	download = true               // 로컬에 자동 설치
+	workDir = file("${project.buildDir}/nodejs")
+	npmWorkDir = file("${project.buildDir}/npm")
+}
+
+task npmBuild(type: NpmTask) {
+	dependsOn 'npmInstall'
+	workingDir = file("${rootDir}/frontend")      // Vue 프로젝트 디렉토리
+	args = ['run', 'build']
+}
+
+processResources.dependsOn npmBuild
