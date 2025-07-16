@@ -67,7 +67,7 @@ public class StatsController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/details")
     public ResponseEntity<StatsPopupResponseDto> getStatsName(@RequestParam String name, @RequestParam int years) {
         StatsPopupResponseDto popupName = statsService.getStatsNameByNameAndYears(new StatsPopupRequestDto(name, years));
         return ResponseEntity.ok(popupName);

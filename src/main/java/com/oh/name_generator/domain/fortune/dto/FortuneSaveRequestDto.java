@@ -1,10 +1,11 @@
 package com.oh.name_generator.domain.fortune.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,7 +18,8 @@ public class FortuneSaveRequestDto {
 
     private String fortuneTelling;
 
-    private List<Integer> fortuneDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fortuneDate;
 
     private String zodiacSigns;
 }
