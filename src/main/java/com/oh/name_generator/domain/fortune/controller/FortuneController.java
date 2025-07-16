@@ -63,6 +63,13 @@ public class FortuneController {
         return ApiResponse.success(savedFortunes);
     }
 
+    /**
+     * 운세 삭제 (쿠키)
+     * deleteSavedFortunes
+     * @param request
+     * @param response
+     * @return ApiResponse<Void>
+     */
     @DeleteMapping("/saved")
     public ApiResponse<Void> deleteSavedFortunes(HttpServletRequest request, HttpServletResponse response) {
         fortuneService.deleteSavedFortunes(request, response);

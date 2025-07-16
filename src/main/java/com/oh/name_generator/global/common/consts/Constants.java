@@ -33,6 +33,7 @@ public final class Constants {
     public static final class Messages {
         public static final String NAME_GENERATION_SUCCESS = "이름이 성공적으로 생성되었습니다.";
         public static final String FORTUNE_GENERATION_SUCCESS = "운세가 성공적으로 생성되었습니다.";
+        public static final String STATS_SEARCH_SUCCESS = "통계가 성공적으로 조회되었습니다.";
         public static final String SAVE_SUCCESS = "성공적으로 저장되었습니다.";
         public static final String DELETE_SUCCESS = "성공적으로 삭제되었습니다.";
         public static final String NOT_FOUND_REQUEST_NAME = "저장할 이름이 없습니다.";
