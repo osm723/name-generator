@@ -76,7 +76,7 @@ public class StatsRepositoryImpl implements StatsRepositoryQuery {
                 .where(genderEqual(statsRequestCond.getGender())
                         , nameEqual(statsRequestCond.getName())
                         , startYearGoe(statsRequestCond.getStartYear())
-                        , endYearGoe(statsRequestCond.getEndYear())
+                        , endYearLoe(statsRequestCond.getEndYear())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -230,7 +230,7 @@ public class StatsRepositoryImpl implements StatsRepositoryQuery {
         return startYear != null ? nameStats.years.goe(startYear) : null;
     }
 
-    private BooleanExpression endYearGoe(Integer endYear) {
+    private BooleanExpression endYearLoe(Integer endYear) {
         return endYear != null ? nameStats.years.loe(endYear) : null;
     }
 

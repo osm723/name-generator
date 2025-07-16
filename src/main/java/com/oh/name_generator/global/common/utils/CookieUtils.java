@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.*;
+
 @Component
 @RequiredArgsConstructor
 public class CookieUtils {
@@ -28,7 +30,7 @@ public class CookieUtils {
 
         try {
             String json = objectMapper.writeValueAsString(savedCookies);
-            String encodedValue = URLEncoder.encode(json, StandardCharsets.UTF_8);
+            String encodedValue = URLEncoder.encode(json, UTF_8);
 
             Cookie cookie = new Cookie(cookieName, encodedValue);
             cookie.setPath("/");
@@ -48,7 +50,7 @@ public class CookieUtils {
                     .orElse(null);
             if (findCookie != null) {
                 try {
-                    savedCookies = objectMapper.readValue(URLDecoder.decode(findCookie.getValue()), List.class);
+                    savedCookies = objectMapper.readValue(URLDecoder.decode(findCookie.getValue(), UTF_8), List.class);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
                 }

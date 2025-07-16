@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.oh.name_generator.global.common.consts.Constants.FileDir.TRANSLATE_FILE_NAME;
+import static java.nio.charset.StandardCharsets.*;
 
 @Service
 @RequiredArgsConstructor
@@ -90,7 +92,7 @@ public class StatsServiceImpl implements StatsService {
         String setName = "[" + name + "]";
 
         try (InputStream is = new ClassPathResource(TRANSLATE_FILE_NAME).getInputStream();
-             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+             BufferedReader br = new BufferedReader(new InputStreamReader(is, UTF_8))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().equals(setName)) {
@@ -115,7 +117,7 @@ public class StatsServiceImpl implements StatsService {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("파일 읽기 오류", e);
         }
 
         return gaBlock;
